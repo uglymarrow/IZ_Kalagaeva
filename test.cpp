@@ -7,7 +7,7 @@ extern "C"
 
 TEST(SERVER_TEST, Validate_dn_spec_sym)
 {
-  EXPECT_FALSE(validate_domain_name("n@me"));
+  EXPECT_EXIT(validate_domain_name("n@me"), ::testing::ExitedWithCode(1), "Domain name contains special symbols \n");
 }
 
 TEST(SERVER_TEST, Test_subnetting)
