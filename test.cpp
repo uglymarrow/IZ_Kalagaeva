@@ -12,11 +12,11 @@ TEST(SERVER_TEST, Validate_dn_spec_sym)
 
 TEST(SERVER_TEST, Test_subnetting)
 {
-  server *servers =  NULL;
+  server *servers = NULL;
   servers = (server *)realloc(servers, sizeof(server));
   server test_server1 = {"abc", {172, 16, 17, 30}, {255, 255, 240, 0}, 1, 1};
   servers[0] = test_server1;
-  //server test_server1 = {"", {0,0,0,0}, {0,0,0,0}, 0, 0};
+  // server test_server1 = {"", {0,0,0,0}, {0,0,0,0}, 0, 0};
   four_bytes subnet1 = {172, 16, 16, 0};
   four_bytes subnets[1];
   define_subnets(servers, subnets, 1);
@@ -28,12 +28,12 @@ TEST(SERVER_TEST, Test_subnetting)
 
 TEST(SERVER_TEST, Validate_dn_def_sym)
 {
-  EXPECT_FALSE(validate_domain_name("-namem-"));
+  EXPECT_EXIT(validate_domain_name("-namem-"), ::testing::ExitedWithCode(1), "Domain name contains '-' symbol at wrong position \n");
 }
 
 TEST(SERVER_TEST, Validate_dn_short)
 {
-  EXPECT_FALSE(validate_domain_name("n"));
+  EXPECT_EXIT(validate_domain_name("n"), ::testing::ExitedWithCode(1), "Domain name length is too short \n");
 }
 
 TEST(SERVER_TEST, Validate_dn_long)
