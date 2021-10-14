@@ -1,0 +1,66 @@
+name: ci
+on:
+  push:
+    branches: [IZ_1, main]
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  tp_iz_1:
+
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: install build-essential
+        run: sudo apt install build-essential
+
+      - name: install lcov
+        run: sudo apt install lcov
+
+      - name: install valgrind
+        run: sudo apt install valgrind
+
+      - name: install git
+        run: sudo apt install git
+
+      - name: install gtest
+        run: sudo apt install libgtest-dev
+
+      - name: install cppcheck
+        run: sudo apt-get install cppcheck
+
+      - name: build project
+        run: make build
+
+      - name: run tests
+        run: make run-all-tests
+
+      - name: valgrind
+        run: make valgrind-check-all
+
+      - name: get coverage
+        run: make get-all-coverage
+
+      - name: get cppcheck report
+        run: make cppcheck
+
+      - name: coverage
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage
+          path: coverage_output/
+
+      - name: valgrind
+        uses: actions/upload-artifact@v2
+        with:
+            name: valgrind
+            path: valgrind_output/
+
+      - name: valgrind
+        uses: actions/upload-artifact@v2
+        with:
+            name: cppcheck
+            path: cppcheck_report.txt
