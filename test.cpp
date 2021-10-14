@@ -5,12 +5,12 @@ extern "C"
 #include "server.h"
 }
 
-TEST(server_TEST, Validate_dn_spec_sym)
+TEST(SERVER_TEST, Validate_dn_spec_sym)
 {
   EXPECT_FALSE(validate_domain_name("n@me"));
 }
 
-TEST(server_TEST, Test_subnetting)
+TEST(SERVER_TEST, Test_subnetting)
 {
   server *servers =  NULL;
   servers = (server *)realloc(servers, sizeof(server));
@@ -26,17 +26,17 @@ TEST(server_TEST, Test_subnetting)
   EXPECT_EQ(subnets[0].b4, subnet1.b4);
 }
 
-TEST(server_TEST, Validate_dn_def_sym)
+TEST(SERVER_TEST, Validate_dn_def_sym)
 {
   EXPECT_FALSE(validate_domain_name("-namem-"));
 }
 
-TEST(server_TEST, Validate_dn_short)
+TEST(SERVER_TEST, Validate_dn_short)
 {
   EXPECT_FALSE(validate_domain_name("n"));
 }
 
-TEST(server_TEST, Validate_dn_long)
+TEST(SERVER_TEST, Validate_dn_long)
 {
   char long_name[500] = {'\0'};
   EXPECT_FALSE(validate_domain_name(long_name));
