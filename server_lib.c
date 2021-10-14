@@ -31,7 +31,7 @@ int ValidateDomainName(const char *str)
         return 0;
     }
 
-    char spec_sym[] = "`~!@#$\%^&*()+=;:',\"{}[]?";
+    char spec_sym[] = "`~!@#$%^&*()+=;:',\"{}[]?";
     char *isym;
     isym = strpbrk(str, spec_sym);
 

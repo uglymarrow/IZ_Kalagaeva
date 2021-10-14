@@ -35,11 +35,11 @@ jobs:
           sudo apt-get install lcov
           ./build/testing
           mkdir coverage && cd coverage
-          gcov ../build/CMakeFiles/main.dir/src/main.c.gcno
+          gcov ../build/CMakeFiles/main.dir/main.c.gcno
           cp -r ../build/CMakeFiles/main.dir/ .
           cd ..
-          lcov --capture --directory coverage/ --output-file equa.info
-          genhtml equa.info --output-directory coverage-report/
+          lcov --capture --directory coverage/ --output-file main.info
+          genhtml main.info --output-directory coverage-report/
           
       - name: Archive coverage test results
         uses: actions/upload-artifact@v2
@@ -51,7 +51,7 @@ jobs:
         run: |
           sudo apt-get install -y valgrind
           mkdir valgrid-output
-          valgrind --leak-check=full --tool=memcheck --show-leak-kinds=all --log-file=valgrid-output/report -q ./build/test.out
+          valgrind --leak-check=full --tool=memcheck --show-leak-kinds=all --log-file=valgrid-output/report -q ./build/testing
           
       - name: Archive valgrind test results
         uses: actions/upload-artifact@v2
