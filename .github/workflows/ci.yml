@@ -35,8 +35,8 @@ jobs:
           sudo apt-get install lcov
           ./build/testing
           mkdir coverage && cd coverage
-          gcov ../build/CMakeFiles/equa.dir/src/equation.c.gcno
-          cp -r ../build/CMakeFiles/equa.dir/ .
+          gcov ../build/CMakeFiles/main.dir/src/main.c.gcno
+          cp -r ../build/CMakeFiles/main.dir/ .
           cd ..
           lcov --capture --directory coverage/ --output-file equa.info
           genhtml equa.info --output-directory coverage-report/
