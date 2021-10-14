@@ -5,62 +5,56 @@ on:
 
   pull_request:
     branches: [main]
-
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  tp_iz_1:
+  CI:
+    name: Run CI
+    runs-on: ubuntu-latest
 
-    runs-on: ubuntu-20.04
-
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: install build-essential
-        run: sudo apt install build-essential
-
-      - name: install lcov
-        run: sudo apt install lcov
-
-      - name: install valgrind
-        run: sudo apt install valgrind
-
-      - name: install git
-        run: sudo apt install git
-
-      - name: install gtest
-        run: sudo apt install libgtest-dev
-
-      - name: install cppcheck
-        run: sudo apt-get install cppcheck
-
-      - name: build project
-        run: make build
-
-      - name: run tests
-        run: make run-all-tests
-
-      - name: valgrind
-        run: make valgrind-check-all
-
-      - name: get coverage
-        run: make get-all-coverage
-
-      - name: get cppcheck report
-        run: make cppcheck
-
-      - name: coverage
+      - name : Check style code
+        run : |
+          sudo apt-get install -y cppcheck
+          cppcheck --enable=warning,style,performance,portability src/
+          
+      - name : Building
+        run : |
+          mkdir build
+          cd build
+          sudo apt-get install -y libgtest-dev
+          cmake ..
+          make
+          cd ..
+          
+      - name: Coverage test
+        run: |
+          sudo apt-get install lcov
+          ./build/test.out
+          mkdir coverage && cd coverage
+          gcov ../build/CMakeFiles/equa.dir/src/equation.c.gcno
+          cp -r ../build/CMakeFiles/equa.dir/ .
+          cd ..
+          lcov --capture --directory coverage/ --output-file equa.info
+          genhtml equa.info --output-directory coverage-report/
+          
+      - name: Archive coverage test results
         uses: actions/upload-artifact@v2
         with:
-          name: coverage
-          path: coverage_output/
+          name: Coverage test
+          path: coverage-report/
 
-      - name: valgrind
+      - name: Valgrind test
+        run: |
+          sudo apt-get install -y valgrind
+          mkdir valgrid-output
+          valgrind --leak-check=full --tool=memcheck --show-leak-kinds=all --log-file=valgrid-output/report -q ./build/test.out
+          
+      - name: Archive valgrind test results
         uses: actions/upload-artifact@v2
         with:
-            name: valgrind
-            path: valgrind_output/
-
-      - name: valgrind
-        uses: actions/upload-artifact@v2
-        with:
-            name: cppcheck
-            path: cppcheck_report.txt
+          name: Valgrind test
+          path: valgrid-output/
