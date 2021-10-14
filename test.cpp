@@ -39,7 +39,7 @@ TEST(SERVER_TEST, Validate_dn_short)
 TEST(SERVER_TEST, Validate_dn_long)
 {
   char long_name[500] = {'\0'};
-  EXPECT_FALSE(validate_domain_name(long_name));
+  EXPECT_EXIT(validate_domain_name(long_name), ::testing::ExitedWithCode(1), "Domain name length is too long \n");
 }
 
 int main(int argc, char **argv)
