@@ -5,41 +5,41 @@ extern "C"
 #include "server.h"
 }
 
-TEST(SERVER_TEST, Validate_dn_spec_sym)
+TEST(server_TEST, Validate_dn_spec_sym)
 {
-  EXPECT_FALSE(ValidateDomainName("n@me"));
+  EXPECT_FALSE(validate_domain_name("n@me"));
 }
 
-TEST(SERVER_TEST, Test_subnetting)
+TEST(server_TEST, Test_subnetting)
 {
-  Server *servers =  NULL;
-  servers = (Server *)realloc(servers, sizeof(Server));
-  Server test_server1 = {"abc", {172, 16, 17, 30}, {255, 255, 240, 0}, 1, 1};
+  server *servers =  NULL;
+  servers = (server *)realloc(servers, sizeof(server));
+  server test_server1 = {"abc", {172, 16, 17, 30}, {255, 255, 240, 0}, 1, 1};
   servers[0] = test_server1;
-  //Server test_server1 = {"", {0,0,0,0}, {0,0,0,0}, 0, 0};
-  FourBytes subnet1 = {172, 16, 16, 0};
-  FourBytes subnets[1];
-  DefineSubnets(servers, subnets, 1);
+  //server test_server1 = {"", {0,0,0,0}, {0,0,0,0}, 0, 0};
+  four_bytes subnet1 = {172, 16, 16, 0};
+  four_bytes subnets[1];
+  define_subnets(servers, subnets, 1);
   EXPECT_EQ(subnets[0].b1, subnet1.b1);
   EXPECT_EQ(subnets[0].b2, subnet1.b2);
   EXPECT_EQ(subnets[0].b3, subnet1.b3);
   EXPECT_EQ(subnets[0].b4, subnet1.b4);
 }
 
-TEST(SERVER_TEST, Validate_dn_def_sym)
+TEST(server_TEST, Validate_dn_def_sym)
 {
-  EXPECT_FALSE(ValidateDomainName("-namem-"));
+  EXPECT_FALSE(validate_domain_name("-namem-"));
 }
 
-TEST(SERVER_TEST, Validate_dn_short)
+TEST(server_TEST, Validate_dn_short)
 {
-  EXPECT_FALSE(ValidateDomainName("n"));
+  EXPECT_FALSE(validate_domain_name("n"));
 }
 
-TEST(SERVER_TEST, Validate_dn_long)
+TEST(server_TEST, Validate_dn_long)
 {
   char long_name[500] = {'\0'};
-  EXPECT_FALSE(ValidateDomainName(long_name));
+  EXPECT_FALSE(validate_domain_name(long_name));
 }
 
 int main(int argc, char **argv)

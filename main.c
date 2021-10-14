@@ -6,7 +6,7 @@
 
 int main()
 {
-	Server *servers = NULL;
+	server *servers = NULL;
 	size_t count = 0;
 	unsigned char input_continues = 1;
 
@@ -14,29 +14,41 @@ int main()
 	do
 	{
 		count++;
-		servers = (Server *)realloc(servers, sizeof(Server) * count);
+		servers = (server *)realloc(servers, sizeof(server) * count);
 
-		if (servers == NULL)
+		if (! servers)
 		{
-			printf("Failed to allocate memory \n");
-			return 0;
+			fprintf(stderr, "%s", "Failed to allocate memory \n");
+			exit(EXIT_FAILURE);
 		}
-
-		if (!InputServerData(servers, count))
+		else
 		{
-			printf("Failed to input server data \n");
-			return 0;
-		};
+			if (input_server_data(servers, count) != EXIT_SUCCESS)
+			{
+				fprintf(stderr, "%s", "Failed to input server data \n");
+				exit(EXIT_FAILURE);
+			};
+		}
 
 		printf("Do you want to continue? 1-yes, 0-no \n");
 		scanf("%hhu", &input_continues);
 	} while (input_continues);
 
-	FourBytes subnets[count];
-	DefineSubnets(servers, subnets, count);
+	four_bytes *subnets = NULL;
+	subnets = (four_bytes *)realloc(subnets, sizeof(four_bytes) * count);
 
-	SubnetOutput(servers, subnets, count);
+	if (! servers)
+	{
+		fprintf(stderr, "%s", "Failed to allocate memory \n");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		define_subnets(servers, subnets, count);
+		subnet_output(servers, subnets, count);
+	}
 
-	free(servers);
-	return 0;
+	if (subnets) free(subnets);
+	if (servers) free(servers);
+	return EXIT_SUCCESS;
 }
