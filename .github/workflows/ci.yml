@@ -33,7 +33,7 @@ jobs:
       - name: Coverage test
         run: |
           sudo apt-get install lcov
-          ./build/testing.out
+          ./build/testing
           mkdir coverage && cd coverage
           gcov ../build/CMakeFiles/equa.dir/src/equation.c.gcno
           cp -r ../build/CMakeFiles/equa.dir/ .
