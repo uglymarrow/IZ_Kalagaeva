@@ -23,3 +23,4 @@ void DefineSubnets(Server *servers, FourBytes subnets[], size_t count);
 void SubnetOutput(Server *servers, FourBytes subnets[], size_t count);
 
 int ValidateDomainName(const char *str);
+void OutputFourBytes(FourBytes address);
