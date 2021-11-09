@@ -22,7 +22,7 @@ compiler:
 
 env:
   global:
-    - CODECOV_TOKEN='bfe8462a-cd0a-4a09-991e-7d32a88b38b7'
+    - CODECOV_TOKEN='1a79504f-d208-4565-b8d5-daed72615e63'
 
 install:
   - sudo apt-get update
@@ -47,7 +47,6 @@ script:
   - ./tests_consistent
   - ./tests_parallel
   - ./tests_file_funcs
-
 
 after_success:
   - lcov --capture --directory . --output-file coverage.info
