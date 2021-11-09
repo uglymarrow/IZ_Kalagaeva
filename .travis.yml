@@ -1,0 +1,58 @@
+dist: bionic
+sudo: required
+language: c
+
+os: linux
+
+addons:
+  apt:
+    packages:
+      - valgrind
+      - lcov
+
+before_install:
+  - sudo apt update
+  - sudo apt install valgrind
+  - sudo apt install clang-format
+  - sudo apt install lcov
+  - sudo apt install cmake
+
+compiler:
+  - gcc
+
+env:
+  global:
+    - CODECOV_TOKEN='bfe8462a-cd0a-4a09-991e-7d32a88b38b7'
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install valgrind
+  - sudo apt-get install lcov
+  - sudo apt-get install libstdc++6
+  - sudo apt-get install cmake
+  - sudo apt-get install cppcheck
+  # Google tests
+  - sudo apt-get install libgtest-dev
+  - cd /usr/src/gtest
+  - sudo cmake .
+  - sudo make
+  - sudo cp *.a /usr/lib
+  - cd -
+
+script:
+  - cmake .
+  - make || travis_terminate 1
+  - cppcheck main.c libs/parallel/search.c libs/consistent/search.c --enable=all --verbose
+  - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./IZ2 ./stress_test.txt || travis_terminate 1
+  - ./tests_consistent
+  - ./tests_parallel
+  - ./tests_file_funcs
+  - ./IZ2 ./test/stress_test.txt || travis_terminate 1
+  - ./IZ2 ./test/small_text.txt || travis_terminate 1
+
+
+after_success:
+  - lcov --capture --directory . --output-file coverage.info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info
+  - lcov --list coverage.info
+  - bash <(curl -s https://codecov.io/bash) -f coverage.info
