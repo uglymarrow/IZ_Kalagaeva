@@ -12,23 +12,15 @@ add_library(ARRAY_FUNCS STATIC libs/array_funcs/array_funcs.c )
 add_library(SEARCH_CONSISTENT STATIC libs/consistent/search.c)
 add_library(SEARCH_PARALLEL SHARED libs/parallel/search.c )
 
-file(COPY text/small_text.txt
-        DESTINATION ../libs/file_funcs)
-file(COPY text/small_text.txt
-        DESTINATION ../libs/parallel)
-file(COPY text/small_text.txt
-        DESTINATION ../libs/consistent)
-
-
-
 add_executable(IZ2 main.c)
-target_link_libraries(IZ2 ${CMAKE_DL_LIBS} SEARCH_CONSISTENT)
 target_link_libraries(IZ2 ${CMAKE_DL_LIBS} FILE_FUNCS)
 target_link_libraries(IZ2 ${CMAKE_DL_LIBS} ARRAY_FUNCS)
-
-
-target_link_libraries(IZ2 ${CMAKE_DL_LIBS} SEARCH_PARALLEL)
-
+if (CMAKE_PARALLEL)
+    message("PARALLEL")
+    target_link_libraries(IZ2 ${CMAKE_DL_LIBS} SEARCH_PARALLEL)
+else()
+    target_link_libraries(IZ2 ${CMAKE_DL_LIBS} SEARCH_CONSISTENT)
+endif()
 
 enable_testing()
 find_package(GTest REQUIRED)

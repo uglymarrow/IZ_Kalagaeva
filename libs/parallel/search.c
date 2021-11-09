@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/mman.h>
-#include <wait.h>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -53,7 +52,8 @@ int search(int *arr, size_t arr_len) {
       }
     } else {
       int status;
-      if (waitpid(pid_arr[i], &status, 0) != pid_arr[i]) exit(EXIT_FAILURE);
+      if (waitpid(pid_arr[i], &status, 0) != pid_arr[i])
+        exit(EXIT_FAILURE);
     }
   }
   free(pid_arr);

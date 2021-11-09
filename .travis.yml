@@ -47,6 +47,13 @@ script:
   - ./tests_consistent
   - ./tests_parallel
   - ./tests_file_funcs
+  - ./tests_array_funcs
+  - cmake . -DCMAKE_PARALLEL=0
+  - make
+  - ./IZ2 ./text/small_text.txt
+  - cmake . -DCMAKE_PARALLEL=1
+  - make
+  - ./IZ2 ./text/small_text.txt
 
 after_success:
   - lcov --capture --directory . --output-file coverage.info

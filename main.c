@@ -10,11 +10,11 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <time.h>
 
 #include "libs/array_funcs/array_funcs.h"
 #include "libs/file_funcs/file_funcs.h"
-#include "libs/parallel/search.h"
+
+#define ITERATION_NUM 5
 
 int main(int argc, char **argv) {
 
@@ -27,14 +27,22 @@ int main(int argc, char **argv) {
 
   size_t arr_len = 0;
   int *arr = create_array(f, &arr_len);
+
   close_file(f);
 
-  clock_t begin_time = clock();
-  search(arr, arr_len);
-  clock_t end_time = clock();
+  //Несколько замеров времени
+  size_t clock_sum = 0;
+
+  for (int i=1; i < ITERATION_NUM; i++) {
+    clock_t begin_time = clock();
+    search(arr, arr_len);
+    clock_t end_time = clock();
+    clock_sum += (end_time - begin_time);
+  }
+
+  printf("TIME: %li", clock_sum/ITERATION_NUM);
+
   free_array(arr);
-  printf("TIME: %li", end_time - begin_time);
-  printf("\nEnd");
 
   return EXIT_SUCCESS;
 }
