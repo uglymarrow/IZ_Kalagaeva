@@ -47,7 +47,6 @@ script:
   - ./tests_consistent
   - ./tests_parallel
   - ./tests_file_funcs
-  - ./IZ2 ./test/stress_test.txt || travis_terminate 1
   - ./IZ2 ./test/small_text.txt || travis_terminate 1
 
 
