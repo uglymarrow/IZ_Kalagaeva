@@ -1,0 +1,62 @@
+dist: bionic
+sudo: required
+language: c
+
+os: linux
+
+addons:
+  apt:
+    packages:
+      - valgrind
+      - lcov
+
+before_install:
+  - sudo apt update
+  - sudo apt install valgrind
+  - sudo apt install clang-format
+  - sudo apt install lcov
+  - sudo apt install cmake
+
+compiler:
+  - gcc
+
+env:
+  global:
+    - CODECOV_TOKEN='1a79504f-d208-4565-b8d5-daed72615e63'
+
+install:
+  - sudo apt-get update
+  - sudo apt-get install valgrind
+  - sudo apt-get install lcov
+  - sudo apt-get install libstdc++6
+  - sudo apt-get install cmake
+  - sudo apt-get install cppcheck
+  # Google tests
+  - sudo apt-get install libgtest-dev
+  - cd /usr/src/gtest
+  - sudo cmake .
+  - sudo make
+  - sudo cp *.a /usr/lib
+  - cd -
+
+script:
+  - cmake .
+  - make || travis_terminate 1
+  - cppcheck main.c libs/parallel/search.c libs/consistent/search.c --enable=all --verbose
+  - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./IZ2 text/small_text.txt || travis_terminate 1
+  - ./tests_consistent
+  - ./tests_parallel
+  - ./tests_file_funcs
+  - ./tests_array_funcs
+  - cmake . -DCMAKE_PARALLEL=0
+  - make
+  - ./IZ2 ./text/small_text.txt
+  - cmake . -DCMAKE_PARALLEL=1
+  - make
+  - ./IZ2 ./text/small_text.txt
+
+after_success:
+  - lcov --capture --directory . --output-file coverage.info
+  - lcov --remove coverage.info '/usr/*' --output-file coverage.info
+  - lcov --list coverage.info
+  - bash <(curl -s https://codecov.io/bash) -f coverage.info
