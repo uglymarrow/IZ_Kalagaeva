@@ -1,6 +1,7 @@
 # IZ2_V26_Kalagaeva
 
 [![Build Status](https://app.travis-ci.com/uglymarrow/IZ_Kalagaeva.svg?branch=IZ_2)](https://app.travis-ci.com/uglymarrow/IZ_Kalagaeva)
+[![codecov](https://codecov.io/gh/uglymarrow/IZ_Kalagaeva/branch/main/graph/badge.svg?token=WYSHWVLD5C)](https://codecov.io/gh/uglymarrow/IZ_Kalagaeva)
 
 Выполнение ИЗ№2 по курсу углубленное программирование С/С++
 
