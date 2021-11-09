@@ -14,8 +14,9 @@ int get_int(FILE *f) {
   }
 
   int result = 0;
-  if (fscanf(f, "%i", &result) == EOF) return EOF;
-//  if (fscanf(f, "%c", &result) <= 0) {
+
+  if ( fscanf(f, "%i", &result) == EOF) return EOF;
+//  if (code <= 0) {
 //    fprintf(stderr, "File reading error");
 //    exit(EXIT_FAILURE);
 //  }
@@ -32,6 +33,7 @@ int *create_array(FILE *f, size_t *arr_len) {
   int *arr = NULL;
   size_t buffer = 2;
   arr = (int *) malloc(buffer * sizeof(int));
+
   if (!arr) {
     fprintf(stderr, "Memory allocation error");
     exit(EXIT_FAILURE);
@@ -39,9 +41,13 @@ int *create_array(FILE *f, size_t *arr_len) {
     int num = get_int(f);
     size_t i = 0;
     do {
-      if (i > buffer) {
+      if (i == buffer - 1) {
         buffer *= 2;
-        arr = (int *) realloc(arr, buffer * sizeof(int));
+        arr = (int *)realloc(arr, buffer * sizeof(int));
+        if (!arr) {
+          fprintf(stderr, "Function create_array. Memory allocation error");
+          exit(EXIT_FAILURE);
+        }
       }
       arr[i] = num;
       i++;

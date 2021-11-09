@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "search.h"
-// Пусть в файле лежит информация о температуре за каждую миллисекунду
+// Пусть в файле лежит информация о температуре за каждую секунду/минуту/час
 int search (int* arr, size_t arr_len){
   float max_diff = 0;
   int diff_time = 0;

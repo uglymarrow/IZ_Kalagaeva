@@ -33,16 +33,15 @@ int main(int argc, char **argv) {
   //Несколько замеров времени
   size_t clock_sum = 0;
 
-  for (int i=1; i < ITERATION_NUM; i++) {
+  for (int i=1; i < 2; i++) {
     clock_t begin_time = clock();
     search(arr, arr_len);
     clock_t end_time = clock();
     clock_sum += (end_time - begin_time);
   }
 
-  printf("TIME: %li", clock_sum/ITERATION_NUM);
-
   free_array(arr);
+  printf("TIME: %li", clock_sum/ITERATION_NUM);
 
   return EXIT_SUCCESS;
 }
