@@ -43,11 +43,11 @@ script:
   - cmake .
   - make || travis_terminate 1
   - cppcheck main.c libs/parallel/search.c libs/consistent/search.c --enable=all --verbose
-  - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./IZ2 ./small.txt || travis_terminate 1
+  - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./IZ2 text/small_text.txt || travis_terminate 1
   - ./tests_consistent
   - ./tests_parallel
   - ./tests_file_funcs
-  - ./IZ2 ./test/small_text.txt || travis_terminate 1
+  - ./IZ2 test/small_text.txt || travis_terminate 1
 
 
 after_success:
