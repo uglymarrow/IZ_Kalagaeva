@@ -47,7 +47,6 @@ script:
   - ./tests_consistent
   - ./tests_parallel
   - ./tests_file_funcs
-  - ./IZ2 test/small_text.txt || travis_terminate 1
 
 
 after_success:
